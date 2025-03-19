@@ -37,30 +37,57 @@ class VerbBlock{
     this.name.color = "blue"
     
     this.tense = tense;
+    this.nextTense = nextTense;
     this.pre = new prefix(tense);
     this.suf = new prefix(nextTense);
     
     this.block.appendChild(this.pre.getShape());
     this.block.style.backgroundColor = this.pre.color;
     this.block.appendChild(this.name);
-    this.block.appendChild(this.suf.getShape())
-    home.appendChild(this.block);
+    this.block.appendChild(this.suf.getShape());
+    //this.block.appendChild(document.createElement("p"))
   }
   
-  canBeBefore(otherVB){
+  canBeAfter(otherVB){
   	if(otherVB == null){return false;}
-  	return otherVB.tense === this.tense;
+  	return otherVB.nextTense === this.tense;
   }
 
 }
 
+class VerbPhrase{
+	constructor(home){
+  	this.block = document.createElement("div");
+  	this.block.style.backgroundColor = "purple";
+    this.block.style.padding = "3px";
+    //this.block.style.display = "inline";
+    home.appendChild(this.block);
+    this.last = null;
+    this.connect = document.createElement("p");
+    this.connect.innerHTML = "-"
+  }
+  add(vp){
+  	if(this.last == null){
+    	this.block.appendChild(vp.block);
+      this.last = vp;
+    }
+  	else if(vp.canBeAfter(this.last)){
+    	this.block.appendChild(this.connect);
+  		this.block.appendChild(vp.block);
+      this.last = vp;
+    }
+  }
+}
+
 var vp = document.getElementById("VP");
 
-new VerbBlock(vp, "could", "oper", "base");
-new VerbBlock(vp, "have", "base", "perfect");
-new VerbBlock(vp, "been", "perfect", "ing");
-new VerbBlock(vp, "being", "ing", "perfect");
-new VerbBlock(vp, "given", "perfect", "main");
+VP = new VerbPhrase(vp);
+
+VP.add(new VerbBlock(vp, "could", "oper", "base"));
+VP.add(new VerbBlock(vp, "have", "base", "perfect"));
+VP.add(new VerbBlock(vp, "been", "perfect", "ing"));
+VP.add(new VerbBlock(vp, "being", "ing", "perfect"));
+VP.add(new VerbBlock(vp, "given", "perfect", "main"));
 
 var it = document.getElementById("items");
 var it = document.getElementById("items");
@@ -92,5 +119,3 @@ new VerbBlock(it, "being", "ing", "main");
   display: inline-grid;
 }
 */
-
-
