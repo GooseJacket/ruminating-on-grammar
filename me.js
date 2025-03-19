@@ -6,11 +6,11 @@ class prefix{
   }
   getTense(d){
  		var name = "";
-    if(this.tense === "perfect"){name="F";this.color="pink";}
-    else if(this.tense === "ing"){name="G";this.color="lime";}
-    else if(this.tense === "base"){name="B";this.color="cyan";}
-    else if(this.tense === "oper"){name="[";this.color="gray";}
-    else if(this.tense === "main"){name="]";this.color="grey";}
+    if(this.tense === "perfect"){name="{";this.color="pink";}
+    else if(this.tense === "ing"){name="(";this.color="lime";}
+    else if(this.tense === "base"){name="[";this.color="cyan";}
+    else if(this.tense === "oper"){name=".";this.color="gray";}
+    else if(this.tense === "main"){name=".";this.color="grey";}
     d.style.backgroundColor = this.color;
     d.innerHTML = name;
     return d;
@@ -58,13 +58,12 @@ class VerbBlock{
 class VerbPhrase{
 	constructor(home){
   	this.block = document.createElement("div");
-  	this.block.style.backgroundColor = "purple";
+  	this.block.style.backgroundColor = "lavender";
     this.block.style.padding = "3px";
     //this.block.style.display = "inline";
     home.appendChild(this.block);
     this.last = null;
-    this.connect = document.createElement("p");
-    this.connect.innerHTML = "-"
+    
   }
   add(vp){
   	if(this.last == null){
@@ -72,6 +71,9 @@ class VerbPhrase{
       this.last = vp;
     }
   	else if(vp.canBeAfter(this.last)){
+      this.connect = document.createElement("p");
+      this.connect.innerHTML = "-"
+      this.connect.style.display = "inline";
     	this.block.appendChild(this.connect);
   		this.block.appendChild(vp.block);
       this.last = vp;
