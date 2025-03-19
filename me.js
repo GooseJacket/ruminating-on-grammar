@@ -26,8 +26,12 @@ class prefix{
 class VerbBlock{
   constructor(home, name, tense, nextTense){
 		this.block = document.createElement("div");
+    this.block.style.backgroundColor = "purple";
     this.block.draggable = true;
+    //this.block.style.padding = "4px";
+    this.block.style.display = "inline";
     this.name = document.createElement("p");
+    this.name.style.color = "white";
     this.name.style.display = "inline";
     this.name.innerHTML = name;
     this.name.color = "blue"
