@@ -9,8 +9,9 @@ class prefix{
     if(this.tense === "perfect"){name="{";this.color="pink";}
     else if(this.tense === "ing"){name="(";this.color="lime";}
     else if(this.tense === "base"){name="[";this.color="cyan";}
-    else if(this.tense === "oper"){name=".";this.color="gray";}
+    else if(this.tense === "oper"){name=".";this.color="orange";}
     else if(this.tense === "main"){name=".";this.color="grey";}
+    else if(this.tense === "past"){name=".";this.color="gray";}
     d.style.backgroundColor = this.color;
     d.innerHTML = name;
     return d;
@@ -23,17 +24,41 @@ class prefix{
     return this.div;
   }
 }
+class Verb{
+	constructor(tenses){
+  	this.tenses = tenses;
+    //0-base, 1-past, 2-perfect, 3-progressive, 4-3POVPres, 5-1POVPres, 6-PluralPres
+    this.currentTense; 
+  }
+  getTense(){
+	  return this.currentTense;
+  }
+  setTense(newTenseIndex){
+  	if(this.tenses.length > newTenseIndex){
+  		this.currentTense = this.tenses[newTenseIndex];
+      return this.currentTense;
+    }
+    else{
+	    return null;
+    }
+  }
+}
+
 class VerbBlock{
-  constructor(home, name, tense, nextTense){
+  constructor(verb, name, tense, nextTense){
+  	this.tenses = ["base", "past", "ing", "perfect"]; 
 		this.block = document.createElement("div");
     this.block.draggable = true;
     //this.block.style.padding = "4px";
     this.block.style.backgroundColor = "purple";
     this.block.style.display = "inline";
+    
+    this.myVerb = verb;
+    
     this.name = document.createElement("p");
     //this.name.style.color = "white";
     this.name.style.display = "inline";
-    this.name.innerHTML = name;
+    this.name.innerHTML = this.myVerb.setTense(this.tenses.indexOf(tense));
     this.name.color = "blue"
     
     this.tense = tense;
@@ -85,11 +110,18 @@ var vp = document.getElementById("VP");
 
 VP = new VerbPhrase(vp);
 
-VP.add(new VerbBlock(vp, "could", "oper", "base"));
-VP.add(new VerbBlock(vp, "have", "base", "perfect"));
-VP.add(new VerbBlock(vp, "been", "perfect", "ing"));
-VP.add(new VerbBlock(vp, "being", "ing", "perfect"));
-VP.add(new VerbBlock(vp, "given", "perfect", "main"));
+
+var could = new Verb(["could"])
+var be = new Verb(["be", "was", "being", "been", "is"])
+var have = new Verb(["have", "had", "having", "had", "has"])
+var give = new Verb(["give", "gave", "giving", "given", "gives"])
+
+
+VP.add(new VerbBlock(could, "could", "oper", "base"));
+VP.add(new VerbBlock(have, "have", "base", "perfect"));
+VP.add(new VerbBlock(be, "", "perfect", "ing"));
+VP.add(new VerbBlock(be, "", "ing", "perfect"));
+VP.add(new VerbBlock(give, "given", "perfect", "main"));
 
 var it = document.getElementById("items");
 var it = document.getElementById("items");
@@ -120,4 +152,12 @@ new VerbBlock(it, "being", "ing", "main");
   padding = 10px;
   display: inline-grid;
 }
+
+<div id="items" class="flex"></div>
+
+<div id="VP"></div>
+
+Make the phrase, "Could have been being given".
+
+<div class="hi"></div>
 */
