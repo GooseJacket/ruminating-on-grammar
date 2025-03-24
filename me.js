@@ -25,10 +25,11 @@ class prefix{
   }
 }
 class Verb{
-	constructor(tenses){
+	constructor(tenses, m){
   	this.tenses = tenses;
     //0-base, 1-past, 2-perfect, 3-progressive, 4-3POVPres, 5-1POVPres, 6-PluralPres
     this.currentTense; 
+    this.isM = m;
   }
   getTense(){
 	  return this.currentTense;
@@ -41,6 +42,9 @@ class Verb{
     else{
 	    return null;
     }
+  }
+  isModal(){
+	  return this.isM;
   }
 }
 
@@ -58,7 +62,11 @@ class VerbBlock{
     this.name = document.createElement("p");
     //this.name.style.color = "white";
     this.name.style.display = "inline";
-    this.name.innerHTML = this.myVerb.setTense(this.tenses.indexOf(tense));
+    if(!this.myVerb.isModal()){
+   		this.name.innerHTML = this.myVerb.setTense(this.tenses.indexOf(tense));
+    }else{
+    	this.name.innerHTML = this.myVerb.setTense(0);
+    }
     this.name.color = "blue"
     
     this.tense = tense;
@@ -111,17 +119,17 @@ var vp = document.getElementById("VP");
 VP = new VerbPhrase(vp);
 
 
-var could = new Verb(["could"])
-var be = new Verb(["be", "was", "being", "been", "is"])
-var have = new Verb(["have", "had", "having", "had", "has"])
-var give = new Verb(["give", "gave", "giving", "given", "gives"])
+var could = new Verb(["could"], true)
+var be = new Verb(["be", "was", "being", "been", "is"], false)
+var have = new Verb(["have", "had", "having", "had", "has"], false)
+var give = new Verb(["give", "gave", "giving", "given", "gives"], false)
 
 
-VP.add(new VerbBlock(could, "could", "oper", "base"));
-VP.add(new VerbBlock(have, "have", "base", "perfect"));
+VP.add(new VerbBlock(could, "", "oper", "base"));
+VP.add(new VerbBlock(have, "", "base", "perfect"));
 VP.add(new VerbBlock(be, "", "perfect", "ing"));
 VP.add(new VerbBlock(be, "", "ing", "perfect"));
-VP.add(new VerbBlock(give, "given", "perfect", "main"));
+VP.add(new VerbBlock(give, "", "perfect", "main"));
 
 var it = document.getElementById("items");
 var it = document.getElementById("items");
